@@ -1,0 +1,1 @@
+// https://www.dnd5eapi.co/api/equipment-categories/
