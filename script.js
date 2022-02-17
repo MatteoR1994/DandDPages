@@ -19,7 +19,7 @@ function onDataReady(data) {
 
         const divListElementContainer = document.createElement('div'); // Creo il div che conterrà l'elemento della lista
         divListElementContainer.className += "list-item" + " ";
-        divListElementContainer.onclick = () => fetchDetail(detailLink);
+        divListElementContainer.onclick = () => fetchDetail(detailLink, equipment.name);
 
         const divLogoContainer = document.createElement('div'); // Creo il div che conterrà il logo degli equipaggiamenti
         divLogoContainer.className += "logo-div" + " ";
@@ -48,13 +48,11 @@ function onDataReady(data) {
 
 function onDataReady2(data) {
     const listOfEquipment = document.getElementById("list-container"); // Recupero il div che conterrà tutti gli i div degli elementi della lista
-
     for (const equipment of data.equipment) {
         let detailLink = "https://www.dnd5eapi.co" + equipment.url;
 
         const divListElementContainer = document.createElement('div'); // Creo il div che conterrà l'elemento della lista
         divListElementContainer.className += "list-item" + " ";
-        // divListElementContainer.onclick = () => fetchDetail(detailLink);
 
         const divLogoContainer = document.createElement('div'); // Creo il div che conterrà il logo degli equipaggiamenti
         divLogoContainer.className += "logo-div" + " ";
@@ -67,8 +65,12 @@ function onDataReady2(data) {
 
         const elementName = document.createElement('h2'); // Creo il tag che conterrà il nome dell'elemento
 
+        addTextToHtmlElement(elementName, equipment.name, false, "list-name-title list-name-title:hover");
 
-        divListElementContainer.onclick = () => fetchDetail(detailLink, elementName);
+        fetch(detailLink)
+        .then(manageResonse)
+        .then((data) => checkDesc(data, divInfoContainer))
+        .catch(onError);
 
         divInfoContainer.appendChild(elementName);
 
@@ -79,6 +81,14 @@ function onDataReady2(data) {
         divListElementContainer.appendChild(divInfoContainer);
 
         listOfEquipment.appendChild(divListElementContainer);
+    }
+}
+
+function checkDesc(data, div) {
+    if(Object.hasOwnProperty.call(data, "desc")) { 
+        const textNodeDesc = document.createTextNode(data.desc);
+        div.appendChild(textNodeDesc);
+        div.style="overflow-y:scroll";
     }
 }
 
@@ -97,7 +107,10 @@ function onError(error) {
     console.log(error);
 }
 
-function fetchDetail(url, oldLink = "https://www.dnd5eapi.co/api/equipment-categories/"){
+function fetchDetail(url, name){
+    const pageTitle = document.getElementById("section-title");
+    pageTitle.innerHTML = name;
+
     const listOfEquipment = document.getElementById("list-container");
     listOfEquipment.innerHTML = "";
     fetch(url)
@@ -107,18 +120,21 @@ function fetchDetail(url, oldLink = "https://www.dnd5eapi.co/api/equipment-categ
 
     const backButton = document.getElementById("back-button");
     backButton.style.visibility = "visible";
-    backButton.onclick = () => fetchBack(oldLink);
+    backButton.onclick = () => fetchBack();
 
-    const pageTitle = document.getElementById("section-title");
-    pageTitle.text = "";
+    
+    
 }
 
-function fetchBack(url) {
+function fetchBack() {
+    const pageTitle = document.getElementById("section-title");
+    pageTitle.innerHTML = "ALL EQUIPMENTS";
+
     const listOfEquipment = document.getElementById("list-container");
     listOfEquipment.innerHTML = "";
     const backButton = document.getElementById("back-button");
     backButton.style.visibility = "hidden";
-    fetch(url)
+    fetch("https://www.dnd5eapi.co/api/equipment-categories/")
         .then(manageResonse)
         .then(onDataReady)
         .catch(onError);
