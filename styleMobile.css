@@ -65,4 +65,8 @@
         align-items: center;
         cursor: pointer;
     }
+    .upButton {
+        width: 25px;
+        height: 25px;
+    }
 }
