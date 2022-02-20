@@ -74,10 +74,11 @@ body {
     /* background-color: rgb(110, 159, 204); */
     text-align: center;
     padding-top: 40px;
+    display: none;
 }
 
 .back-button {
-    visibility: hidden;
+    /* visibility: hidden; */
     cursor: pointer;
 }
 

@@ -44,7 +44,7 @@ function dataManager(data) {
     const listOfEquipment = document.getElementById("list-container"); // Recupero il div che conterrà tutti gli i div degli elementi della lista
     for (const equipment of iterableData) {
         let detailLink = "https://www.dnd5eapi.co" + equipment.url;
-        
+
         const divListElementContainer = document.createElement('div'); // Creo il div che conterrà l'elemento della lista
         divListElementContainer.className += "list-item" + " ";
         if (hasResults) {
@@ -111,8 +111,8 @@ function fetchDetail(url, name){
         .then(dataManager)
         .catch(onError);
 
-    const backButton = document.getElementById("back-button");
-    backButton.style.visibility = "visible";
+        const backButton = document.getElementById("back-button-container");
+        backButton.style.display = "block";
     backButton.onclick = () => fetchBack();   
 }
 
@@ -122,8 +122,8 @@ function fetchBack() {
 
     const listOfEquipment = document.getElementById("list-container");
     listOfEquipment.innerHTML = "";
-    const backButton = document.getElementById("back-button");
-    backButton.style.visibility = "hidden";
+    const backButton = document.getElementById("back-button-container");
+    backButton.style.display = "none";
     fetch("https://www.dnd5eapi.co/api/equipment-categories/")
         .then(manageResonse)
         .then(dataManager)
