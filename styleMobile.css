@@ -28,7 +28,6 @@
         display: none;
     }
     .back-button {
-        /* visibility: hidden; */
         cursor: pointer;
         width: 40px;
     }

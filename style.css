@@ -78,7 +78,6 @@ body {
 }
 
 .back-button {
-    /* visibility: hidden; */
     cursor: pointer;
 }
 
@@ -162,9 +161,18 @@ body {
     cursor: pointer;
     padding: 15px;
     border-radius: 4px;
-  }
+}
 
-  .upButton:hover {
+.upButton:hover {
     background-color: rgb(100, 66, 4);
     color: white;
-  }
+}
+
+.search-button {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    width: 45px;
+    height: 45px;
+    cursor: pointer;
+}
