@@ -88,7 +88,7 @@ function onError(error) {
 }
 
 function manageResonse(response) {
-    console.log(response);
+    //console.log(response);
     return response.json();
 }
 
@@ -96,50 +96,28 @@ function startSearch() {
     const textToSearch = prompt("Cosa vuoi cercare? Ricordati di scrivere in inglese.");
     fetch("https://www.dnd5eapi.co/api/equipment-categories/")
         .then(manageResonse)
-        .then((data) => deepSearch(data, textToSearch))
+        .then((data) => search(data, textToSearch))
         .catch(onError);
 }
 
-function deepSearch(data, toSearch) {
+function search(data, toSearch) {
     let searchResult = [];
     for (const element of data.results) {
         if (element.name.toLowerCase() === toSearch.toLowerCase() || element.name.toLowerCase().includes(toSearch.toLowerCase())) {
             searchResult.push({name: element.name, type: "principal"});
         }
-        //console.log("principal: " + element.url);
-
-        fetch(element.url)
-            .then(manageResonse)
-            .then((data) => subSearch(data, searchResult))
-            .catch(onError);
     }
-    // console.log(searchResult);
-    // if (searchResult.length === 0) {
-    //     console.log("Nessun risultato per '" + toSearch + "'.");
-    // } else {
-    //     console.log("Risultati ricerca: \n\n");
-    //     let i = 1;
-    //     for (const element of searchResult) {
-    //         console.log(i + ") Tipo: " + element.type + " - Nome: " + element.name);
-    //         i++;
-    //     }
-    // }
-}
-
-function subSearch(data, result) {
-    for (const subElement of data) {
-        //console.log("second: " + subElement.name);
-        if (subElement.name.toLowerCase() === toSearch.toLowerCase() || subElement.name.toLowerCase().includes(toSearch.toLowerCase())) {
-            result.push({ name: subElement.name, type: "second" });
-        }
-    }
-    console.log(result);
-    if (result.length === 0) {
+    
+    if (searchResult.length === 0) {
         console.log("Nessun risultato per '" + toSearch + "'.");
     } else {
-        console.log("Risultati ricerca: \n\n");
+        if (searchResult.length === 1) {
+            console.log(searchResult.length + " risultato trovato per '" + toSearch + "': \n\n");
+        } else {
+            console.log(searchResult.length + " risultati trovati per '" + toSearch + "': \n\n");
+        }
         let i = 1;
-        for (const element of result) {
+        for (const element of searchResult) {
             console.log(i + ") Tipo: " + element.type + " - Nome: " + element.name);
             i++;
         }
@@ -165,8 +143,8 @@ function fetchDetail(url, name){
         .then(dataManager)
         .catch(onError);
 
-        const backButton = document.getElementById("back-button-container");
-        backButton.style.display = "block";
+    const backButton = document.getElementById("back-button-container");
+    backButton.style.display = "block";
     backButton.onclick = () => fetchBack();   
 }
 
